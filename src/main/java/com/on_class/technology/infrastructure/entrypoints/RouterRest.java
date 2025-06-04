@@ -1,5 +1,6 @@
 package com.on_class.technology.infrastructure.entrypoints;
 
+import com.on_class.technology.infrastructure.documentation.TechnologyApiInfo;
 import com.on_class.technology.infrastructure.entrypoints.handler.TechnologyHandler;
 import com.on_class.technology.infrastructure.utils.Constants;
 import org.springframework.context.annotation.Bean;
@@ -13,6 +14,7 @@ import static org.springframework.web.reactive.function.server.RouterFunctions.r
 @Configuration
 public class RouterRest {
     @Bean
+    @TechnologyApiInfo
     public RouterFunction<ServerResponse> routerFunction(TechnologyHandler technologyHandler) {
         return route(POST(Constants.TECHNOLOGY_ROUTE), technologyHandler::createTechnology);
     }

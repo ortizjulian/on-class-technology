@@ -7,6 +7,7 @@ import com.on_class.technology.infrastructure.entrypoints.handler.validator.Requ
 import com.on_class.technology.infrastructure.entrypoints.mapper.ITechnologyMapper;
 import com.on_class.technology.infrastructure.utils.Constants;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
@@ -26,6 +27,6 @@ public class TechnologyHandler{
                 .doOnNext(requestValidator::validate)
                 .flatMap(dto -> technologyServicePort.registerTechnology(technologyMapper.toTechnology(dto)))
                 .map(technologyMapper::toTechnologyDto)
-                .flatMap(result -> ServerResponse.ok().bodyValue(result));
+                .flatMap(result -> ServerResponse.status(HttpStatus.CREATED).bodyValue(result));
     }
 }
