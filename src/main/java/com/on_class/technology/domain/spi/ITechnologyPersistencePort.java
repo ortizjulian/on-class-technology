@@ -5,5 +5,5 @@ import reactor.core.publisher.Mono;
 
 public interface ITechnologyPersistencePort {
     Mono<Technology> registerTechnology(Technology technology);
-    Mono<Boolean> exitsByName(String name);
+    Mono<Boolean> existsByName(String name);
 }

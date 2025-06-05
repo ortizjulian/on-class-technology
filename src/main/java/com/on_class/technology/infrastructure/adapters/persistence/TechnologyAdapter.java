@@ -20,7 +20,7 @@ public class TechnologyAdapter implements ITechnologyPersistencePort {
     }
 
     @Override
-    public Mono<Boolean> exitsByName(String name) {
+    public Mono<Boolean> existsByName(String name) {
         return technologyRepository.findByName(name)
                 .hasElement();
     }

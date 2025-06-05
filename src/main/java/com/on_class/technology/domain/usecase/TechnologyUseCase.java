@@ -1,7 +1,7 @@
 package com.on_class.technology.domain.usecase;
 
 import com.on_class.technology.domain.api.ITechnologyServicePort;
-import com.on_class.technology.domain.exceptions.AlreadyExitsException;
+import com.on_class.technology.domain.exceptions.AlreadyExistsException;
 import com.on_class.technology.domain.model.Technology;
 import com.on_class.technology.domain.spi.ITechnologyPersistencePort;
 import com.on_class.technology.infrastructure.utils.Constants;
@@ -17,9 +17,9 @@ public class TechnologyUseCase implements ITechnologyServicePort {
 
     @Override
     public Mono<Technology> registerTechnology(Technology technology) {
-        return technologyPersistencePort.exitsByName(technology.name())
+        return technologyPersistencePort.existsByName(technology.name())
                 .flatMap(exists -> exists
-                        ? Mono.error(new AlreadyExitsException(Constants.EXCEPTION_TECHNOLOGY_ALREADY_EXITS))
+                        ? Mono.error(new AlreadyExistsException(Constants.EXCEPTION_TECHNOLOGY_ALREADY_EXITS))
                         : technologyPersistencePort.registerTechnology(technology)
                 );
 

@@ -1,7 +1,7 @@
 package com.on_class.technology.infrastructure.exceptionhandler;
 
 
-import com.on_class.technology.domain.exceptions.AlreadyExitsException;
+import com.on_class.technology.domain.exceptions.AlreadyExistsException;
 import com.on_class.technology.domain.exceptions.BadRequestException;
 import com.on_class.technology.domain.exceptions.EmptyRequestBodyException;
 import com.on_class.technology.infrastructure.entrypoints.dto.ErrorDto;
@@ -38,7 +38,7 @@ public class GlobalExceptionHandler extends AbstractErrorWebExceptionHandler {
         Throwable error = getError(request);
         
         return switch (error) {
-            case AlreadyExitsException e -> handleAlreadyExistsException(e);
+            case AlreadyExistsException e -> handleAlreadyExistsException(e);
             case BadRequestException e -> handleBadRequestException(e);
             case EmptyRequestBodyException e -> handleRequestBodyException(e);
             default -> handleGenericException(error);
@@ -52,7 +52,7 @@ public class GlobalExceptionHandler extends AbstractErrorWebExceptionHandler {
                 .bodyValue(errorResponse);
     }
 
-    private Mono<ServerResponse> handleAlreadyExistsException(AlreadyExitsException ex) {
+    private Mono<ServerResponse> handleAlreadyExistsException(AlreadyExistsException ex) {
         ErrorDto errorResponse = new ErrorDto(HttpStatus.CONFLICT.value(), ex.getMessage());
         return ServerResponse.status(HttpStatus.CONFLICT)
                 .contentType(MediaType.APPLICATION_JSON)

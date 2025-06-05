@@ -29,7 +29,6 @@ public class RequestValidator {
                         .toList();
 
                 throw new BadRequestException(errorMessages);
-            }
-
+        }
     }
 }

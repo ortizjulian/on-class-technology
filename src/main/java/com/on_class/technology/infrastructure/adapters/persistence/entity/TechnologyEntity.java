@@ -2,6 +2,7 @@ package com.on_class.technology.infrastructure.adapters.persistence.entity;
 
 
 import com.on_class.technology.infrastructure.utils.Constants;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -12,6 +13,7 @@ import org.springframework.data.relational.core.mapping.Table;
 @Getter
 @Setter
 @RequiredArgsConstructor
+@AllArgsConstructor
 public class TechnologyEntity {
     @Id
     private Long id;
