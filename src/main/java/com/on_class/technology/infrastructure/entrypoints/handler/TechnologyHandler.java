@@ -3,7 +3,6 @@ package com.on_class.technology.infrastructure.entrypoints.handler;
 import com.on_class.technology.domain.api.ITechnologyServicePort;
 import com.on_class.technology.domain.enums.TechnicalMessage;
 import com.on_class.technology.domain.exceptions.BusinessException;
-import com.on_class.technology.domain.model.CapabilityTechnology;
 import com.on_class.technology.infrastructure.entrypoints.dto.CapabilityTechnologiesRequestDto;
 import com.on_class.technology.infrastructure.entrypoints.dto.TechnologyDto;
 import com.on_class.technology.infrastructure.entrypoints.handler.validator.RequestValidator;
@@ -55,11 +54,7 @@ public class TechnologyHandler{
         return request.bodyToMono(CapabilityTechnologiesRequestDto.class)
                 .switchIfEmpty(Mono.error(new BusinessException(TechnicalMessage.EMPTY_BODY)))
                 .doOnNext(requestValidator::validate)
-                .map(capabilityTechnologiesRequestDto ->
-                     capabilityTechnologiesRequestDto.getTechnologiesIds().stream().map(techId -> new CapabilityTechnology(capabilityId, techId))
-                            .toList()
-                )
-                .flatMap(technologyServicePort::registerCapabilityTechnologies)
+                .flatMap(requestDto-> technologyServicePort.registerCapabilityTechnologies(capabilityId, requestDto.getTechnologyIds()))
                 .then(ServerResponse.status(HttpStatus.CREATED).build())
                 .doOnError(ex -> log.error(TECHNOLOGY_ERROR, ex))
                 .onErrorResume(BusinessException.class , ex ->  responseBuilder.buildErrorResponse(

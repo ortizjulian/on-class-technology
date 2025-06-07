@@ -1,11 +1,11 @@
 package com.on_class.technology.infrastructure.adapters.persistence;
 
-import com.on_class.technology.domain.model.CapabilityTechnology;
 import com.on_class.technology.domain.spi.ICapabilityTechnologyPersistencePort;
-import com.on_class.technology.infrastructure.adapters.persistence.mapper.ICapabilityTechnologyMapper;
+import com.on_class.technology.infrastructure.adapters.persistence.entity.CapabilityTechnologyEntity;
 import com.on_class.technology.infrastructure.adapters.persistence.repository.ICapabilityTechnologyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -15,12 +15,18 @@ import java.util.List;
 public class CapabilityTechnologyAdapter implements ICapabilityTechnologyPersistencePort {
 
     private final ICapabilityTechnologyRepository capabilityTechnologyRepository;
-    private final ICapabilityTechnologyMapper capabilityTechnologyMapper;
 
     @Override
-    public Mono<Void> registerCapabilityTechnologies(List<CapabilityTechnology> capabilityTechnologyList) {
-        return capabilityTechnologyRepository.saveAll(
-                capabilityTechnologyMapper.toCapabilityTechnologyEntityList(capabilityTechnologyList))
+    public Mono<Void> registerCapabilityTechnologies(Long capabilityId, List<Long> technologyIds) {
+        return Flux.fromIterable(technologyIds)
+                .map(techId -> CapabilityTechnologyEntity.builder()
+                        .technologyId(techId)
+                        .capabilityId(capabilityId)
+                        .build()
+                )
+                .collectList()
+                .flatMapMany(capabilityTechnologyRepository::saveAll)
                 .then();
     }
+
 }

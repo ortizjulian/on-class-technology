@@ -3,7 +3,6 @@ package com.on_class.technology.domain.usecase;
 import com.on_class.technology.domain.api.ITechnologyServicePort;
 import com.on_class.technology.domain.enums.TechnicalMessage;
 import com.on_class.technology.domain.exceptions.BusinessException;
-import com.on_class.technology.domain.model.CapabilityTechnology;
 import com.on_class.technology.domain.model.Technology;
 import com.on_class.technology.domain.spi.ICapabilityTechnologyPersistencePort;
 import com.on_class.technology.domain.spi.ITechnologyPersistencePort;
@@ -29,12 +28,12 @@ public class TechnologyUseCase implements ITechnologyServicePort {
     }
 
     @Override
-    public Mono<Void> registerCapabilityTechnologies(List<CapabilityTechnology> capabilityTechnologyList) {
-        List<Long> technologyIds = capabilityTechnologyList.stream().map((CapabilityTechnology::getTechnologyId)).toList();
+    public Mono<Void> registerCapabilityTechnologies(Long capabilityId, List<Long> technologyIds) {
         return technologyPersistencePort.existAllByIds(technologyIds)
                 .flatMap(result -> Boolean.FALSE.equals(result)
-                ? Mono.error(new BusinessException(TechnicalMessage.NOT_ALL_FOUND))
-                : capabilityTechnologyPersistencePort.registerCapabilityTechnologies(capabilityTechnologyList)
-        );
+                        ? Mono.error(new BusinessException(TechnicalMessage.NOT_ALL_FOUND))
+                        : capabilityTechnologyPersistencePort.registerCapabilityTechnologies(capabilityId, technologyIds)
+                );
     }
+
 }

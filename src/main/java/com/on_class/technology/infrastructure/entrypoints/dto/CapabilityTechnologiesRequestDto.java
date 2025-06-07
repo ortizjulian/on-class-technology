@@ -12,5 +12,5 @@ import java.util.List;
 @Getter
 @Setter
 public class CapabilityTechnologiesRequestDto {
-    private List<Long> technologiesIds;
+    private List<Long> technologyIds;
 }
