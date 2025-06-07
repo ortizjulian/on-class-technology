@@ -1,12 +1,10 @@
-package com.on_class.technology.domain.api;
+package com.on_class.technology.domain.spi;
 
 import com.on_class.technology.domain.model.CapabilityTechnology;
-import com.on_class.technology.domain.model.Technology;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
 
-public interface ITechnologyServicePort {
-    Mono<Technology> registerTechnology(Technology technology);
+public interface ICapabilityTechnologyPersistencePort {
     Mono<Void> registerCapabilityTechnologies(List<CapabilityTechnology> capabilityTechnologyList);
 }
