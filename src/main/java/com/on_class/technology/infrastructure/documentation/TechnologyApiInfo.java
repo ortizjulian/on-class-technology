@@ -1,7 +1,11 @@
 package com.on_class.technology.infrastructure.documentation;
 
+import com.on_class.technology.infrastructure.entrypoints.dto.CapabilityTechnologiesRequestDto;
 import com.on_class.technology.infrastructure.entrypoints.dto.TechnologyDto;
+import com.on_class.technology.infrastructure.utils.Constants;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
@@ -20,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RouterOperations({
         @RouterOperation(
                 method = RequestMethod.POST,
-                path = "/technology",
+                path = Constants.ROUTE_TECHNOLOGY,
                 operation = @Operation(
                         summary = "Create a new technology",
                         description = "Registers a technology with a name and description.",
@@ -53,6 +57,53 @@ import org.springframework.web.bind.annotation.RequestMethod;
                                 @ApiResponse(
                                         responseCode = "409",
                                         description = "A technology with that name already exists"
+                                )
+                        }
+                )
+        ),
+        @RouterOperation(
+                method = RequestMethod.POST,
+                path = Constants.ROUTE_TECHNOLOGY + Constants.ROUTE_TECHNOLOGY_LINK_CAPACITIES,
+                operation = @Operation(
+                        summary = "Link technologies to a capability",
+                        description = "Associates a list of technology IDs with a given capability.",
+                        operationId = "linkCapacities",
+                        tags = {"Technologies"},
+                        parameters = {
+                                @Parameter(
+                                        name = Constants.CAPABILITY_ID_PATH_VARIABLE,
+                                        description = "The ID of the capability to link technologies to",
+                                        required = true,
+                                        in = ParameterIn.PATH
+                                )
+                        },
+                        requestBody = @RequestBody(
+                                description = "A list of technology IDs to be linked to the capability",
+                                required = true,
+                                content = @Content(
+                                        mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                        schema = @Schema(
+                                                implementation = CapabilityTechnologiesRequestDto.class,
+                                                requiredProperties = {"technologyIds"}
+                                        )
+                                )
+                        ),
+                        responses = {
+                                @ApiResponse(
+                                        responseCode = "201",
+                                        description = "Technologies linked successfully"
+                                ),
+                                @ApiResponse(
+                                        responseCode = "400",
+                                        description = "Invalid request data"
+                                ),
+                                @ApiResponse(
+                                        responseCode = "404",
+                                        description = "One or more technology IDs not found"
+                                ),
+                                @ApiResponse(
+                                        responseCode = "500",
+                                        description = "Unexpected server error"
                                 )
                         }
                 )
