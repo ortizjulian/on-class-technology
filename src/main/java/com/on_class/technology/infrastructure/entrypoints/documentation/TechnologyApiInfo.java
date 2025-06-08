@@ -1,4 +1,4 @@
-package com.on_class.technology.infrastructure.documentation;
+package com.on_class.technology.infrastructure.entrypoints.documentation;
 
 import com.on_class.technology.infrastructure.entrypoints.dto.CapabilityTechnologiesRequestDto;
 import com.on_class.technology.infrastructure.entrypoints.dto.TechnologyDto;

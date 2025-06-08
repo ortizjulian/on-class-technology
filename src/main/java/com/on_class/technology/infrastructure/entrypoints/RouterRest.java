@@ -1,6 +1,6 @@
 package com.on_class.technology.infrastructure.entrypoints;
 
-import com.on_class.technology.infrastructure.documentation.TechnologyApiInfo;
+import com.on_class.technology.infrastructure.entrypoints.documentation.TechnologyApiInfo;
 import com.on_class.technology.infrastructure.entrypoints.handler.TechnologyHandler;
 import com.on_class.technology.infrastructure.utils.Constants;
 import org.springframework.context.annotation.Bean;
