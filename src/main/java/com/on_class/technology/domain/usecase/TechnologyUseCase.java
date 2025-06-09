@@ -3,9 +3,12 @@ package com.on_class.technology.domain.usecase;
 import com.on_class.technology.domain.api.ITechnologyServicePort;
 import com.on_class.technology.domain.enums.TechnicalMessage;
 import com.on_class.technology.domain.exceptions.BusinessException;
+import com.on_class.technology.domain.model.Capability;
+import com.on_class.technology.domain.model.CapabilityTechnology;
 import com.on_class.technology.domain.model.Technology;
 import com.on_class.technology.domain.spi.ICapabilityTechnologyPersistencePort;
 import com.on_class.technology.domain.spi.ITechnologyPersistencePort;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -33,6 +36,23 @@ public class TechnologyUseCase implements ITechnologyServicePort {
                 .flatMap(result -> Boolean.FALSE.equals(result)
                         ? Mono.error(new BusinessException(TechnicalMessage.NOT_ALL_FOUND))
                         : capabilityTechnologyPersistencePort.registerCapabilityTechnologies(capabilityId, technologyIds)
+                );
+    }
+
+    @Override
+    public Flux<Capability> getCapabilitiesTechnologies(List<Long> capabilityIds) {
+        return capabilityTechnologyPersistencePort.getTechnologiesByCapabilityIds(capabilityIds)
+                .groupBy(CapabilityTechnology::getCapabilityId)
+                .flatMap(groupedFlux -> groupedFlux
+                        .map(CapabilityTechnology::getTechnologyId)
+                        .collectList()
+                        .flatMap(technologyIds -> technologyPersistencePort.findByIds(technologyIds)
+                                .collectList()
+                                .map(technologies -> new Capability(
+                                        groupedFlux.key(),
+                                        technologies
+                                ))
+                        )
                 );
     }
 

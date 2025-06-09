@@ -1,11 +1,14 @@
 package com.on_class.technology.infrastructure.entrypoints.documentation;
 
+import com.on_class.technology.infrastructure.entrypoints.dto.CapabilityListRequestDto;
+import com.on_class.technology.infrastructure.entrypoints.dto.CapabilityResponseDto;
 import com.on_class.technology.infrastructure.entrypoints.dto.CapabilityTechnologiesRequestDto;
-import com.on_class.technology.infrastructure.entrypoints.dto.TechnologyDto;
+import com.on_class.technology.infrastructure.entrypoints.dto.TechnologyResponseDto;
 import com.on_class.technology.infrastructure.utils.Constants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
@@ -36,7 +39,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
                                 content = @Content(
                                         mediaType = MediaType.APPLICATION_JSON_VALUE,
                                         schema = @Schema(
-                                                implementation = TechnologyDto.class,
+                                                implementation = TechnologyResponseDto.class,
                                                 requiredProperties = {"name", "description"}
                                         )
                                 )
@@ -47,7 +50,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
                                         description = "Technology created successfully",
                                         content = @Content(
                                                 mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                                schema = @Schema(implementation = TechnologyDto.class)
+                                                schema = @Schema(implementation = TechnologyResponseDto.class)
                                         )
                                 ),
                                 @ApiResponse(
@@ -104,6 +107,45 @@ import org.springframework.web.bind.annotation.RequestMethod;
                                 @ApiResponse(
                                         responseCode = "500",
                                         description = "Unexpected server error"
+                                )
+                        }
+                )
+        ),
+        @RouterOperation(
+                method = RequestMethod.POST, // Your code shows POST(Constants.ROUTE_BY_CAPABILITIES)
+                path = Constants.ROUTE_BY_CAPABILITIES, // Use the constant for the path
+                operation = @Operation(
+                        summary = "Get technologies by capability IDs",
+                        description = "Retrieves a list of technologies based on provided capability IDs.",
+                        operationId = "getTechnologiesByCapabilities",
+                        tags = {"Technologies"},
+                        requestBody = @RequestBody(
+                                description = "List of capability IDs to filter technologies",
+                                required = true,
+                                content = @Content(
+                                        mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                        schema = @Schema(
+                                                implementation = CapabilityListRequestDto.class, // Request DTO
+                                                requiredProperties = {"capabilityIds"}
+                                        )
+                                )
+                        ),
+                        responses = {
+                                @ApiResponse(
+                                        responseCode = "200",
+                                        description = "List of technologies retrieved successfully",
+                                        content = @Content(
+                                                mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                                array = @ArraySchema(schema = @Schema(implementation = CapabilityResponseDto.class))
+                                        )
+                                ),
+                                @ApiResponse(
+                                        responseCode = "400",
+                                        description = "Invalid request (e.g., empty body, malformed JSON, invalid capability IDs)"
+                                ),
+                                @ApiResponse(
+                                        responseCode = "500",
+                                        description = "Internal server error"
                                 )
                         }
                 )
