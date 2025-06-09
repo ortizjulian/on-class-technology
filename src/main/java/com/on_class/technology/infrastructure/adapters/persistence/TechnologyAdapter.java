@@ -4,10 +4,14 @@ import com.on_class.technology.domain.model.Technology;
 import com.on_class.technology.domain.spi.ITechnologyPersistencePort;
 import com.on_class.technology.infrastructure.adapters.persistence.mapper.ITechnologyEntityMapper;
 import com.on_class.technology.infrastructure.adapters.persistence.repository.ITechnologyRepository;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
-@AllArgsConstructor
+import java.util.List;
+
+@Component
+@RequiredArgsConstructor
 public class TechnologyAdapter implements ITechnologyPersistencePort {
 
     private final ITechnologyRepository technologyRepository;
@@ -20,8 +24,14 @@ public class TechnologyAdapter implements ITechnologyPersistencePort {
     }
 
     @Override
-    public Mono<Boolean> existsByName(String name) {
+    public Mono<Technology> findByName(String name) {
         return technologyRepository.findByName(name)
-                .hasElement();
+                .map(technologyMapper::toTechnology);
+    }
+
+    @Override
+    public Mono<Boolean> existAllByIds(List<Long> ids) {
+        return technologyRepository.countByIdIn(ids)
+                .map(count -> count == ids.size());
     }
 }

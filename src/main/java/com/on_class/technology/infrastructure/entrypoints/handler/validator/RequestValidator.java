@@ -1,7 +1,8 @@
 package com.on_class.technology.infrastructure.entrypoints.handler.validator;
 
-import com.on_class.technology.domain.exceptions.BadRequestException;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.on_class.technology.domain.enums.TechnicalMessage;
+import com.on_class.technology.domain.exceptions.BusinessException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BeanPropertyBindingResult;
@@ -11,14 +12,10 @@ import org.springframework.validation.Validator;
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class RequestValidator {
 
     private final Validator validator;
-
-    @Autowired
-    public RequestValidator(Validator validator) {
-        this.validator = validator;
-    }
 
     public <T> void validate(T body) {
         Errors errors = new BeanPropertyBindingResult(body, body.getClass().getName());
@@ -28,7 +25,7 @@ public class RequestValidator {
                         .map(DefaultMessageSourceResolvable::getDefaultMessage)
                         .toList();
 
-                throw new BadRequestException(errorMessages);
+                throw new BusinessException(TechnicalMessage.INVALID_REQUEST,errorMessages);
         }
     }
 }
