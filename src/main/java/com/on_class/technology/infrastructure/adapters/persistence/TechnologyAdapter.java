@@ -6,6 +6,7 @@ import com.on_class.technology.infrastructure.adapters.persistence.mapper.ITechn
 import com.on_class.technology.infrastructure.adapters.persistence.repository.ITechnologyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -33,5 +34,11 @@ public class TechnologyAdapter implements ITechnologyPersistencePort {
     public Mono<Boolean> existAllByIds(List<Long> ids) {
         return technologyRepository.countByIdIn(ids)
                 .map(count -> count == ids.size());
+    }
+
+    @Override
+    public Flux<Technology> findByIds(List<Long> ids) {
+        return technologyRepository.findByIdIn(ids)
+                .map(technologyMapper::toTechnology);
     }
 }

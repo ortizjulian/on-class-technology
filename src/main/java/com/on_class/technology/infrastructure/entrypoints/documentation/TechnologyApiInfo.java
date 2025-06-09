@@ -1,7 +1,7 @@
 package com.on_class.technology.infrastructure.entrypoints.documentation;
 
 import com.on_class.technology.infrastructure.entrypoints.dto.CapabilityTechnologiesRequestDto;
-import com.on_class.technology.infrastructure.entrypoints.dto.TechnologyDto;
+import com.on_class.technology.infrastructure.entrypoints.dto.TechnologyResponseDto;
 import com.on_class.technology.infrastructure.utils.Constants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -36,7 +36,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
                                 content = @Content(
                                         mediaType = MediaType.APPLICATION_JSON_VALUE,
                                         schema = @Schema(
-                                                implementation = TechnologyDto.class,
+                                                implementation = TechnologyResponseDto.class,
                                                 requiredProperties = {"name", "description"}
                                         )
                                 )
@@ -47,7 +47,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
                                         description = "Technology created successfully",
                                         content = @Content(
                                                 mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                                schema = @Schema(implementation = TechnologyDto.class)
+                                                schema = @Schema(implementation = TechnologyResponseDto.class)
                                         )
                                 ),
                                 @ApiResponse(

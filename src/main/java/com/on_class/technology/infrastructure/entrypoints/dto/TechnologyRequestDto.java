@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class TechnologyDto {
+public class TechnologyRequestDto {
 
     @NotBlank(message = Constants.EXCEPTION_TECHNOLOGY_NAME_NULL)
     @Size(min = Constants.MIN_CHARACTERS_NAME_TECHNOLOGY,

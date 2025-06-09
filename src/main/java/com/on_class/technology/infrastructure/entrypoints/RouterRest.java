@@ -21,5 +21,6 @@ public class RouterRest {
         return nest(path(Constants.ROUTE_TECHNOLOGY),
                 route(POST(Constants.ROUTE_EMPTY), technologyHandler::createTechnology)
                         .andRoute(POST(Constants.ROUTE_TECHNOLOGY_LINK_CAPACITIES), technologyHandler::linkCapacities)
+                        .andRoute(POST(Constants.ROUTE_BY_CAPABILITIES), technologyHandler::getTechnologiesByCapabilities)
         );}
 }

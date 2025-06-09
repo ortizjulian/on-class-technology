@@ -10,6 +10,7 @@ public class Constants {
     //Routes
     public static final String ROUTE_TECHNOLOGY= "/technology";
     public static final String ROUTE_EMPTY = "";
+    public static final String ROUTE_BY_CAPABILITIES = "/byCapabilities";
     public static final String CAPABILITY_ID_PATH_VARIABLE = "capabilityId";
     public static final String ROUTE_TECHNOLOGY_LINK_CAPACITIES = "/link-capabilities/{" + CAPABILITY_ID_PATH_VARIABLE + "}";
     //Table
