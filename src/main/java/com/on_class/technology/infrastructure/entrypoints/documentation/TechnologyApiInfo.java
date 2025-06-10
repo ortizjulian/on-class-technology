@@ -112,8 +112,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
                 )
         ),
         @RouterOperation(
-                method = RequestMethod.POST, // Your code shows POST(Constants.ROUTE_BY_CAPABILITIES)
-                path = Constants.ROUTE_BY_CAPABILITIES, // Use the constant for the path
+                method = RequestMethod.POST,
+                path = Constants.ROUTE_BY_CAPABILITIES,
                 operation = @Operation(
                         summary = "Get technologies by capability IDs",
                         description = "Retrieves a list of technologies based on provided capability IDs.",
